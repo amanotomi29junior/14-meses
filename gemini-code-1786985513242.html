@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Duby</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Fondo degradado romántico */
+    body {
+      background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Lluvia de corazones cayendo */
+    .heart {
+      position: fixed;
+      top: -20px;
+      font-size: 24px;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+      animation: fall 4s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Contenedor principal de las cartas */
+    .cards-container {
+      width: 100%;
+      max-width: 550px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    /* Diseño de las tarjetas de las cartas */
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .card h2 {
+      color: #d63384;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      color: #4a4a4a;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    /* Botón flotante para pausar o reproducir la música */
+    .audio-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px 18px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      z-index: 100;
+      font-size: 0.9rem;
+      color: #d63384;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid rgba(214, 51, 132, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Audio de Fondo -->
+  <audio id="bg-music" loop>
+    <source src="mi-vida-entera-piano.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Botón de control de audio -->
+  <div class="audio-badge" id="music-toggle">
+    <span>🎵 Mi Vida Entera (Piano)</span>
+  </div>
+
+  <!-- Cartas Románticas -->
+  <div class="cards-container">
+    <div class="card">
+      <h2>✉️ Carta #1</h2>
+      <p>Escribe aquí el contenido de la primera carta...</p>
+    </div>
+
+    <div class="card">
+      <h2>✉️ Carta #2</h2>
+      <p>Escribe aquí el contenido de la segunda carta...</p>
+    </div>
+
+    <div class="card">
+      <h2>✉️ Carta #3</h2>
+      <p>Escribe aquí el contenido de la tercera carta...</p>
+    </div>
+  </div>
+
+  <script>
+    // Configuración y reproducción de audio
+    const music = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
+    music.volume = 0.35; // Volumen suave de fondo
+
+    function startAudio() {
+      music.play().catch(() => {
+        // Si el navegador bloquea el autoplay, inicia al dar el primer clic en la página
+        document.addEventListener('click', () => music.play(), { once: true });
+      });
+    }
+
+    window.addEventListener('load', startAudio);
+
+    // Botón manual para encender o pausar la canción
+    musicToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    });
+
+    // Lluvia de corazones animados
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 4000);
+    }
+
+    setInterval(createHeart, 300);
+  </script>
+</body>
+</html>
